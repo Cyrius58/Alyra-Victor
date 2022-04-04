@@ -124,13 +124,13 @@ contract("Voting",accounts=>{
         });
         context("onlyVoters:",function (){
             it("...sould revert on getVoter", async () => {
-                await expectRevert(votingInstance.getVoter(owner,{from: notRegistered}), "You're not a voter");});
+                await expectRevert(votingInstance.getVoter(owner,           {from: notRegistered}), "You're not a voter");});
             it("...sould revert on getOneProposal", async () => {
-                await expectRevert(votingInstance.getOneProposal(0,{from: notRegistered}), "You're not a voter");});
+                await expectRevert(votingInstance.getOneProposal(0,         {from: notRegistered}), "You're not a voter");});
             it("...sould revert on addProposal", async () => {
-                await expectRevert(votingInstance.addProposal("test",{from: notRegistered}), "You're not a voter");});
+                await expectRevert(votingInstance.addProposal("test",       {from: notRegistered}), "You're not a voter");});
             it("...sould revert on setVote", async () => {
-                await expectRevert(votingInstance.setVote(0,{from: notRegistered}), "You're not a voter");});  
+                await expectRevert(votingInstance.setVote(0,                {from: notRegistered}), "You're not a voter");});  
         });
     });
 
