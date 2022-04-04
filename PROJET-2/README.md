@@ -27,4 +27,6 @@
 
 ### 1. onlyOwner:
 - Added 6 revert checkings around the functions modified with onlyOwner;
+
+### 2. onlyVoters:
 - Added 4 revert checkings around the functions modified with onlyVoters;
