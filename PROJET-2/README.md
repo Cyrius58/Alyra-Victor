@@ -22,3 +22,9 @@
 ### 4. Revert (linked to addVoter function with different statuses):
 
 - Check if addVoter reverts when WorkflowStatus is not in the &quot;Voters registration&quot; session. (4 hooks);
+
+## 2. About onlyOwner/onlyVoters:
+
+### 1. onlyOwner:
+- Added 6 revert checkings around the functions modified with onlyOwner;
+- Added 4 revert checkings around the functions modified with onlyVoters;
