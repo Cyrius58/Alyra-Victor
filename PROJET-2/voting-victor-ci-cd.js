@@ -17,7 +17,7 @@ contract("Voting",accounts=>{
   *      {value: 4,  name: 'VotingSessionEnded',           },
   *      {value: 5,  name: 'VotesTallied',                 },
   *  ];
-  **/
+  */
     
     //Instanciate the 'Voting' contract
     let votingInstance;
@@ -136,23 +136,21 @@ contract("Voting",accounts=>{
         });
     });
 
-
-
-
-    describe("tests about proposals",function(){
-        before(async function(){
-            votingInstance=await Voting.new({from:owner});
-            await votingInstance.addVoter(owner,{from:owner});
-
-            context("Set :",function(){
-
-            });
-            context("Get :",function(){
-                
-            });
-        });
-
-    });
+/**
+*    describe("tests about proposals",function(){
+*        before(async function(){
+*            votingInstance=await Voting.new({from:owner});
+*            await votingInstance.addVoter(owner,{from:owner});
+*
+*            context("Set :",function(){
+*
+*            });
+*            context("Get :",function(){
+*                
+*            });
+*        });
+*
+*    });
+*/
+    
 });
-
-//https://mochajs.org/#hooks
