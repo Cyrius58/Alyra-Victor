@@ -1,5 +1,5 @@
 # TESTS REALIZED :
-
+__Total unit test count : 22__
 ## 1. About voters :
 
 ### 1. Set (addVoter function):
