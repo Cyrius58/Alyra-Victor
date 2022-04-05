@@ -8,15 +8,17 @@ contract("Voting",accounts=>{
     const third         = accounts[2];
     const notRegistered = accounts[9];
 
-    const WorkflowStatus = [
-        {value: 0,  name: 'RegisteringVoters',            },
-        {value: 1,  name: 'ProposalsRegistrationStarted', },
-        {value: 2,  name: 'ProposalsRegistrationEnded',   },
-        {value: 3,  name: 'VotingSessionStarted',         },
-        {value: 4,  name: 'VotingSessionEnded',           },
-        {value: 5,  name: 'VotesTallied',                 },
-    ];
-
+  /**  
+  *  const WorkflowStatus = [
+  *      {value: 0,  name: 'RegisteringVoters',            },
+  *      {value: 1,  name: 'ProposalsRegistrationStarted', },
+  *      {value: 2,  name: 'ProposalsRegistrationEnded',   },
+  *      {value: 3,  name: 'VotingSessionStarted',         },
+  *      {value: 4,  name: 'VotingSessionEnded',           },
+  *      {value: 5,  name: 'VotesTallied',                 },
+  *  ];
+  **/
+    
     //Instanciate the 'Voting' contract
     let votingInstance;
 
