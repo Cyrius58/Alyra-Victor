@@ -7,7 +7,7 @@ contract("Voting",accounts=>{
     const voter1        = accounts[1];
     const notRegistered = accounts[9];
 
-  /**  
+  /**  this part could be used in a next version allowing the test code to be simplified and factorized. (see README.md for more details)
   *  const WorkflowStatus = [
   *      {value: 0,  name: 'RegisteringVoters',            },
   *      {value: 1,  name: 'ProposalsRegistrationStarted', },
