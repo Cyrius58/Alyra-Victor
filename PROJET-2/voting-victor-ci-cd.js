@@ -1,11 +1,10 @@
 const Voting = artifacts.require("./Voting.sol");
 const {BN, expectRevert, expectEvent} = require('@openzeppelin/test-helpers');
-const {expect, assert}=require('chai');
+const {expect}=require('chai');
 
 contract("Voting",accounts=>{
     const owner         = accounts[0];
-    const second        = accounts[1];
-    const third         = accounts[2];
+    const voter1        = accounts[1];
     const notRegistered = accounts[9];
 
   /**  
@@ -23,6 +22,7 @@ contract("Voting",accounts=>{
     let votingInstance;
 
     describe ("Tests about voters :",function (){
+        //tests around the set functionality
         context("Set :",function(){
             beforeEach(async function (){
                 votingInstance=await Voting.new({from:owner});
@@ -44,6 +44,7 @@ contract("Voting",accounts=>{
                 await expectRevert(votingInstance.addVoter(owner,{from:owner}),"Already registered");
             }); 
         })
+        //tests around the get functionality
         context("Get :",function(){
             before(async function(){
                 votingInstance=await Voting.new({from:owner});
@@ -62,6 +63,7 @@ contract("Voting",accounts=>{
                 expect(new BN(storedData.votedProposalId)).to.be.bignumber.equal(new BN(0));
             }); 
         });
+        //tests around the event functionality
         context("Events :",function(){
             before(async function(){
                 votingInstance=await Voting.new({from:owner});
@@ -71,7 +73,9 @@ contract("Voting",accounts=>{
                 expectEvent(findEvent,"VoterRegistered",0,owner);
             });
         });
+        //it could be usefull to factorize this section for unit tests
         context("Revert because of current status :",function(){
+            //tests around the WorkflowStatus functionality BEFORE the voting session
             context("Before Voting",function(){
                 before(async function (){
                     votingInstance=await Voting.new({from:owner});
@@ -87,6 +91,7 @@ contract("Voting",accounts=>{
                     await expectRevert(votingInstance.addVoter(owner,{from:owner}),"Voters registration is not open yet");
                 });
             });
+            //tests around the WorkflowStatus functionality DURING and AFTER the voting session
             context("after Voting",function(){
                 before(async function (){
                     votingInstance=await Voting.new({from:owner});
@@ -94,8 +99,7 @@ contract("Voting",accounts=>{
                     await votingInstance.endProposalsRegistering();
                     await votingInstance.startVotingSession();
                 });
-                
-                it("...should revert if in endVotingSession session", async ()=>{
+                it("...should revert if in endVotingSession", async ()=>{
                     await votingInstance.endVotingSession();
                     await expectRevert(votingInstance.addVoter(owner,{from:owner}),"Voters registration is not open yet");
                 });
@@ -106,33 +110,46 @@ contract("Voting",accounts=>{
             });
         });
     });
-    describe("Testing on user status:", function () {
+    //tests around users status
+    describe("Testing on users status:", function () {
         before(async () => {
             votingInstance = await Voting.new({from:owner});
         });
+        //here are the tests to check if the user interacting with the smart contract can use functions midified with onlyOwner:
         context("onlyOwner:",function (){
             it("...sould revert on addVoter", async () => {
-                await expectRevert(votingInstance.addVoter(second,          {from: second}), "Ownable: caller is not the owner");});
+                await expectRevert(votingInstance.addVoter(voter1,          {from: voter1}), "Ownable: caller is not the owner");
+            });
             it("...sould revert on StartProposalRegistering", async () => {
-                await expectRevert(votingInstance.startProposalsRegistering({from: second}), "Ownable: caller is not the owner");});
+                await expectRevert(votingInstance.startProposalsRegistering({from: voter1}), "Ownable: caller is not the owner");
+            });
             it("...sould revert on endProposalsRegistering", async () => {
-                await expectRevert(votingInstance.endProposalsRegistering(  {from: second}), "Ownable: caller is not the owner");});
+                await expectRevert(votingInstance.endProposalsRegistering(  {from: voter1}), "Ownable: caller is not the owner");
+            });
             it("...sould revert on startVotingSession", async () => {
-                await expectRevert(votingInstance.startVotingSession(       {from: second}), "Ownable: caller is not the owner");});
+                await expectRevert(votingInstance.startVotingSession(       {from: voter1}), "Ownable: caller is not the owner");
+            });
             it("...sould revert on endVotingSession", async () => {
-                await expectRevert(votingInstance.endVotingSession(         {from: second}), "Ownable: caller is not the owner");});
+                await expectRevert(votingInstance.endVotingSession(         {from: voter1}), "Ownable: caller is not the owner");
+            });
             it("...sould revert on tallyVotes", async () => {
-                await expectRevert(votingInstance.tallyVotesDraw(           {from: second}), "Ownable: caller is not the owner");});
+                await expectRevert(votingInstance.tallyVotesDraw(           {from: voter1}), "Ownable: caller is not the owner");
+            });
         });
+        //same but for onlyVoters:
         context("onlyVoters:",function (){
             it("...sould revert on getVoter", async () => {
-                await expectRevert(votingInstance.getVoter(owner,           {from: notRegistered}), "You're not a voter");});
+                await expectRevert(votingInstance.getVoter(owner,           {from: notRegistered}), "You're not a voter");
+            });
             it("...sould revert on getOneProposal", async () => {
-                await expectRevert(votingInstance.getOneProposal(0,         {from: notRegistered}), "You're not a voter");});
+                await expectRevert(votingInstance.getOneProposal(0,         {from: notRegistered}), "You're not a voter");
+            });
             it("...sould revert on addProposal", async () => {
-                await expectRevert(votingInstance.addProposal("test",       {from: notRegistered}), "You're not a voter");});
+                await expectRevert(votingInstance.addProposal("test",       {from: notRegistered}), "You're not a voter");
+            });
             it("...sould revert on setVote", async () => {
-                await expectRevert(votingInstance.setVote(0,                {from: notRegistered}), "You're not a voter");});  
+                await expectRevert(votingInstance.setVote(0,                {from: notRegistered}), "You're not a voter");
+            });  
         });
     });
 
